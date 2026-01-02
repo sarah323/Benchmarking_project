@@ -1,6 +1,3 @@
-Absolutely! I’ve condensed your workflow into a **clear, easy-to-follow troubleshooting and solution narrative**, highlighting the use of the Agilent bed file and focusing on the key steps, problems, and resolutions. Here’s a polished version:
-
----
 
 # NGS Data Analysis: Troubleshooting and Solutions
 
