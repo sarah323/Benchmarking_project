@@ -1,4 +1,5 @@
 
+
 # NGS Data Analysis: Troubleshooting and Solutions
 
 ## 1. Project Setup
@@ -185,5 +186,4 @@ samtools index HG002_chr22_V5_ontarget.markdup.bam
 4. **On-target analysis:** Use Agilent SureSelect BED file to restrict coverage calculations accurately.
 5. **Duplicate marking:** Should be done **before restricting to capture regions** to ensure accurate downstream analyses.
 
-
-
+---
