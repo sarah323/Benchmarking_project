@@ -299,9 +299,3 @@ done
 
 ---
 
-If you want, I can also:
-
-* Convert this into a **fully executable bash script**
-* Add a **directory tree diagram**
-* Add a **Results section explaining hap.py metrics**
-* Split this into **README + scripts/** structure
