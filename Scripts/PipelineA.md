@@ -1,4 +1,4 @@
-# Benchmarking Variant Calling Performance at Different Depths of Coverage (HG002, chr22)
+# Benchmarking Variant Calling Performance at Different Depths of Coverage (HG002) (Whole genome alignment)
 
 This repository documents a **reproducible benchmarking workflow** to evaluate how sequencing depth affects germline variant calling performance using **GIAB HG002**, **GATK Best Practices**, and **hap.py**.
 
