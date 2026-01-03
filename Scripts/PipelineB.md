@@ -2,7 +2,7 @@
 
 # HG002 WES chr22 Subsampling and Variant Calling Workflow (GRCh38) (Direct chr22 alignment)
 
-This repository documents a complete workflow for processing **HG002 whole-exome sequencing (WES)** data, restricting analysis to **chromosome 22**, subsampling to multiple coverage depths, performing **GATK variant calling**, and benchmarking results using **hap.py** against GIAB truth sets. (The main difference between this pipelineB and pipelineA is that in pipelineB we aligned the fastq R1 and R2 files to the GRCh38_chr22 reference, while in pipelineA we aligned the fastq files to the whole GRCh38 reference first, then we subsampled the resulted bam file to chromosome 22).
+This repository documents a complete workflow for processing **HG002 whole-exome sequencing (WES)** data, restricting analysis to **chromosome 22**, subsampling to multiple coverage depths, performing **GATK variant calling**, and benchmarking results using **hap.py** against GIAB truth sets. (The main difference between pipeline B and pipeline A is that in pipeline B, we aligned the FASTQ R1 and R2 files directly to the GRCh38_chr22 reference from the start. In contrast, in pipeline A, we first aligned the FASTQ files to the entire GRCh38 reference and then subsampled the resulting BAM file to chromosome 22.).
 
 ---
 
