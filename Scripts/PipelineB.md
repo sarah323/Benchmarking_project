@@ -138,7 +138,7 @@ samtools flagstat HG002_chr22.sorted.bam
 samtools depth -a HG002_chr22.sorted.bam | \
 awk '{sum+=$3; cnt++} END {print "Average depth =", sum/cnt}'
 ```
-
+#Average depth =27
 ---
 
 ## 10. Identify Exome Capture Kit
