@@ -174,6 +174,8 @@ samtools depth HG002.hg38.chr22.full.bam \
   ##Mean depth chr22 =17
 
 ########################################
+# 5) Prepare SureSelect V5 chr22 BED
+########################################
 ###The next step is to restrict our bam file to WES capture kit used for the HG002 sample
 ##First, we viewed the head of the original bam file to see the type of sequencing kit used, using this command
 samtools view -H 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
@@ -189,8 +191,6 @@ samtools view -H 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_
 ##Copying it to my work directory
 cp ../../Downloads/S04380110_hg38.zip .
 
-########################################
-# 5) Prepare SureSelect V5 chr22 BED
 ########################################
 cd "$REF"
 
