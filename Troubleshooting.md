@@ -112,7 +112,8 @@ bwa index GRCh38_chr22.fa
 ```bash
 bwa mem -t 2 -K 10000000 -R '@RG\tID:HG002\tSM:HG002\tPL:ILLUMINA' GRCh38_chr22.fa HG002_R1.clean.fastq.gz HG002_R2.clean.fastq.gz | samtools view -b - | samtools sort -@2 -m512M -o HG002_chr22.sorted.bam
 ```
-
+**Pipeline A:** Align FASTQ → whole GRCh38 → subsample BAM to chr22  
+- **Pipeline B:** Align FASTQ directly → GRCh38_chr22
 ✅ Outcome: BAM 12GB, all reads preserved, reasonable singleton percentage (~1%).
 
 **Observation:** BAM larger than original due to:
