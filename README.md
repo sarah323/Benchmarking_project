@@ -1,4 +1,10 @@
 # Benchmarking Project: Evaluating Variant Calling Performance at Different Depths of Coverage
+## Contributors
+
+- **Sarah Salah** – Faculty of Medicine, Alexandria University  
+- **Aya Refaay** – Faculty of Medicine, Alexandria University  
+- **Esraa Abotaleb** – Biotechnology, Cairo University  
+- **Hasnaa Elshehaby** – [Affiliation TBD]
 
 ## Overview
 This project benchmarks variant calling pipelines by evaluating the effect of sequencing coverage on variant detection accuracy. Using whole-exome Illumina reads from the HG002 reference sample, the analysis compares variant calling performance at multiple depths of coverage (2×, 10×, 40×, and 80×), restricted to **chromosome 22** to reduce computational cost.
