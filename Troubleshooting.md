@@ -155,8 +155,8 @@ samtools view -b -L S04380110_chr22.bed HG002_chr22.sorted.bam > HG002_chr22_V5_
 samtools index HG002_chr22_V5_ontarget.bam
 ```
 
-* Average coverage (all targets including 0-depth): 251.79x
-* Average coverage (covered bases only): 160.75x
+* Average coverage: 238x
+
 
 **Note:** These values are inflated for mapped reads only; including 0-depth gives true capture performance.
 
