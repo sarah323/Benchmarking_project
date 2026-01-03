@@ -30,9 +30,6 @@ benchmark_project/
 ├── truth/           # GIAB truth VCF + BED
 └── metrics/happy/   # hap.py benchmarking results
 
-#!/bin/bash
-
-
 ########################################
 # My paths (project structure)
 ########################################
