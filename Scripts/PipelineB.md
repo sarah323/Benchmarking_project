@@ -200,7 +200,7 @@ samtools depth \
   HG002_chr22_V5_ontarget.markdup.bam | \
 awk '{sum+=$3; cnt++} END {print "Mean on-target depth =", sum/cnt}'
 ```
-
+#Mean on-target depth =238
 ---
 
 ## 14. Subsample BAM to Target Depths
