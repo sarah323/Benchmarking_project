@@ -98,7 +98,7 @@ bwa index GRCh38.fa
 
 ---
 
-## 7. Solution: Aligning to Chromosome 22 Only
+## 7. Solution: Aligning to Chromosome 22 Only (2 workflows were followed to accomodate for different computational powers)
 
 * Created chr22 reference:
 
