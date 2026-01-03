@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Benchmarking Variant Calling Performance at Different Coverage Depths"
+message: "If you use this repository, please cite it as below."
+authors:
+  - family-names: Salah
+    given-names: Sarah
+    affiliation: "Faculty of Medicine, Alexandria University"
+  - family-names: Refaay
+    given-names: Aya
+    affiliation: "Faculty of Medicine, Alexandria University"
+  - family-names: Aly
+    given-names: Esraa
+    affiliation: "Biotechnology, Cairo University"
+  - family-names: Elshehaby
+    given-names: Hasnaa
+    affiliation: "[Affiliation TBD]"
+version: 1.0.0
+date-released: 2026-01-03
