@@ -54,9 +54,10 @@ gatk --version
 bcftools –version
 
 ##Installing hap.py in a separate environment because of compatibility issues 
-conda create -n hap_py_env -c bioconda -c conda-forge hap.py -y
-conda activate hap_py_env
-hap.py –help
+conda create -n happenv -c bioconda -c conda-forge hap.py=0.3.12 python=3.7
+conda activate happenv
+which hap.py
+
 ########################################
 ##Activating ngs1 environment again
 conda activate ngs1
@@ -173,6 +174,7 @@ samtools index HG002.hg38.chr22.full.bam
 
 samtools depth HG002.hg38.chr22.full.bam \
   | awk '{sum+=$3; cnt++} END {print "Mean depth chr22 =", sum/cnt}'
+  ##Mean depth chr22 =17
 
 ########################################
 ###The next step is to restrict our bam file to WES capture kit used for the HG002 sample
@@ -218,6 +220,7 @@ samtools depth \
   -b ../ref/SureSelect_V5_hg38_chr22.bed \
   HG002.hg38.chr22.V5_ontarget.bam \
   | awk '{sum+=$3; cnt++} END {print "Mean on-target depth =", sum/cnt}'
+  ##Mean on-target depth =221
 
 ########################################
 # 7) Subsample to target depths
@@ -261,7 +264,44 @@ done
 ########################################
 # 11) Benchmark with hap.py
 ########################################
-for depth in 2x 10x 40x 80x; do
+conda activate happenv
+
+#1) Run hap.py once on the 80x BAM
+---------------------------------
+mkdir -p metrics/happy
+
+hap.py \
+  truth/HG002_GRCh38_chr22_v4.2.1_benchmark.vcf.gz \
+  vcf/HG002.hg38.chr22_V5_ontarget_80x.raw.vcf.gz \
+  -f truth/HG002_GRCh38_chr22_v4.2.1_benchmark.bed \
+  -r ref/hg38.fa \
+  -o metrics/happy/HG002.chr22_80x
+
+#2) Run hap.py for all four depths (2x, 10x, 40x, 80x)
+-----------------------------------------------------
+for depth in 2x 10x 40x 80x
+do
+  echo "Running hap.py for depth ${depth} ..."
   hap.py \
-    "$TRUTH/HG002_GRCh
+    truth/HG002_GRCh38_chr22_v4.2.1_benchmark.vcf.gz \
+    vcf/HG002.hg38.chr22_V5_ontarget_${depth}.raw.vcf.gz \
+    -f truth/HG002_GRCh38_chr22_v4.2.1_benchmark.bed \
+    -r ref/hg38.fa \
+    -o metrics/happy/HG002.chr22_${depth}
+done
+
+#3) Extract SNP/INDEL PASS lines from each summary file
+------------------------------------------------------
+for depth in 2x 10x 40x 80x
+do
+  echo "===== ${depth} SNP PASS ====="
+  grep "SNP, PASS" metrics/happy/HG002.chr22_${depth}.summary.csv
+  echo
+  echo "===== ${depth} INDEL PASS ====="
+  grep "INDEL, PASS" metrics/happy/HG002.chr22_${depth}.summary.csv
+  echo
+done
+
+
+
 
