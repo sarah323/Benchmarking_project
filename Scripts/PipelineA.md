@@ -1,6 +1,6 @@
 # Benchmarking Variant Calling Performance at Different Depths of Coverage (HG002) (Whole genome alignment)
 
-This repository documents a **reproducible benchmarking workflow** to evaluate how sequencing depth affects germline variant calling performance using **GIAB HG002**, **GATK Best Practices**, and **hap.py**.
+This repository documents a **reproducible benchmarking workflow** to evaluate how sequencing depth affects germline variant calling performance using **GIAB HG002**, **GATK Best Practices**, and **hap.py**. The main difference between pipeline B and pipeline A is that in pipeline B, we aligned the FASTQ R1 and R2 files directly to the GRCh38_chr22 reference from the start. In contrast, in pipeline A, we first aligned the FASTQ files to the entire GRCh38 reference and then subsampled the resulting BAM file to chromosome 22.
 
 All analyses are restricted to **chromosome 22** to reduce computational cost while maintaining benchmarking validity.
 
