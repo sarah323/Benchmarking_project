@@ -41,7 +41,7 @@ VCF=${PROJECT}/vcf
 TRUTH=${PROJECT}/truth
 METRICS=${PROJECT}/metrics/happy
 
-mkdir -p "$BAM" "$VCF" "$METRICS" "$raw_data" "$truth"
+mkdir -p "$BAM" "$VCF" "$METRICS" "$raw_data" "$truth" "$ref"
 
 ########################################
 ##Make sure that all the necessary packages and tools are installed:
@@ -179,13 +179,12 @@ samtools depth HG002.hg38.chr22.full.bam \
 samtools view -H 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
 
 ##We saw this multiple times in the read group and sample metadata:
-Sample_Diag-excap51-HG002-EEogPU
-Project_Diag-excap51-2015-09-23
+#Sample_Diag-excap51-HG002-EEogPU
+#Project_Diag-excap51-2015-09-23
 ##excap51 is a very common internal shorthand used by diagnostic labs for:
-Exome capture ~51 Mb → Agilent SureSelect Human All Exon V5
+#Exome capture ~51 Mb → Agilent SureSelect Human All Exon V5
 
-##Then, an account on the Agilent SureDesign was created 
-then we searched for and downloaded the matching bed file “SureSelect Human All Exon V5” ==> from Suredesign ==> sureselect DNA ==> Agilent Catalog ==> SureSelect Human All Exon V5 (hg38) ==> Agilent SureDesign
+##Then, an account on the Agilent SureDesign was created then we searched for and downloaded the matching bed file “SureSelect Human All Exon V5” ==> from Suredesign ==> sureselect DNA ==> Agilent Catalog ==> SureSelect Human All Exon V5 (hg38) ==> Agilent SureDesign
 
 ##Copying it to my work directory
 cp ../../Downloads/S04380110_hg38.zip .
@@ -263,10 +262,8 @@ done
 ########################################
 conda activate happenv
 
-#1) Run hap.py once on the 80x BAM
+#1) Run hap.py once on the 80x BAM (as a test)
 ---------------------------------
-mkdir -p metrics/happy
-
 hap.py \
   truth/HG002_GRCh38_chr22_v4.2.1_benchmark.vcf.gz \
   vcf/HG002.hg38.chr22_V5_ontarget_80x.raw.vcf.gz \
