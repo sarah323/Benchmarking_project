@@ -31,7 +31,7 @@ benchmark_project/
 └── metrics/happy/   # hap.py benchmarking results
 
 #!/bin/bash
-set -euo pipefail
+
 
 ########################################
 # My paths (project structure)
@@ -44,9 +44,81 @@ VCF=${PROJECT}/vcf
 TRUTH=${PROJECT}/truth
 METRICS=${PROJECT}/metrics/happy
 
-mkdir -p "$BAM" "$VCF" "$METRICS"
+mkdir -p "$BAM" "$VCF" "$METRICS" "$raw_data" "$truth"
 
 ########################################
+##Make sure that all the necessary packages and tools are installed:
+samtools --version
+bwa
+gatk --version
+bcftools –version
+
+##Installing hap.py in a separate environment because of compatibility issues 
+conda create -n hap_py_env -c bioconda -c conda-forge hap.py -y
+conda activate hap_py_env
+hap.py –help
+########################################
+##Activating ngs1 environment again
+conda activate ngs1
+########################################
+##Downloading and preparing files:
+#######################################
+#downloading the GIAB reference (WES)
+Wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/OsloUniversityHospital_Exome/151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
+wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/OsloUniversityHospital_Exome/151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bai
+
+#Downloading GRCh38 reference and unzipping it
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+gunzip GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+
+#Renaming the file
+mv GCA_000001405.15_GRCh38_no_alt_analysis_set.fna hg38.fa
+
+#indexing
+samtools faidx hg38.fa
+bwa index hg38.fa
+
+#creating a sequence dictionary (describing chromosomes)
+gatk CreateSequenceDictionary \
+   -R hg38.fa \
+   -O hg38.dict
+
+#downloading the truthset and its index
+wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark.vcf.gz
+wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark.vcf.gz.tbi
+wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed
+
+#renaming the file
+mv HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed \
+>    HG002_GRCh38_1_22_v4.2.1_benchmark.bed
+
+
+#######################################
+##exploring the original bam file and here is the code along with its output:
+samtools view -c -f 1 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
+##150538907
+
+samtools flagstat 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
+##The output
+150538907 + 0 in total (QC-passed reads + QC-failed reads)
+152131 + 0 secondary
+0 + 0 supplementary
+7305282 + 0 duplicates
+150113954 + 0 mapped (99.72% : N/A)
+150386776 + 0 paired in sequencing
+75193388 + 0 read1
+75193388 + 0 read2
+148839498 + 0 properly paired (98.97% : N/A)
+149715400 + 0 with itself and mate mapped
+246423 + 0 singletons (0.16% : N/A)
+307022 + 0 with mate mapped to a different chr
+247662 + 0 with mate mapped to a different chr (mapQ>=5)
+#######################################
+##Sorting the original bam file
+samtools sort -n -o HG002_posiSrt.markDup.namesort.bam   151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
+#This resulted in a 15GB sorted file
+
+#######################################
 # 0) From original exome BAM → FASTQ
 ########################################
 cd "$BAM"
@@ -57,7 +129,7 @@ samtools fastq \
   -0 /dev/null \
   -s /dev/null \
   -n \
-  HG002.exome.markdup.bam
+  HG002_posiSrt.markDup.namesort.bam
 
 ########################################
 # 1) FASTQ sanity check
@@ -101,6 +173,23 @@ samtools index HG002.hg38.chr22.full.bam
 
 samtools depth HG002.hg38.chr22.full.bam \
   | awk '{sum+=$3; cnt++} END {print "Mean depth chr22 =", sum/cnt}'
+
+########################################
+###The next step is to restrict our bam file to WES capture kit used for the HG002 sample
+##First, we viewed the head of the original bam file to see the type of sequencing kit used, using this command
+samtools view -H 151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
+
+##We saw this multiple times in the read group and sample metadata:
+Sample_Diag-excap51-HG002-EEogPU
+Project_Diag-excap51-2015-09-23
+##excap51 is a very common internal shorthand used by diagnostic labs for:
+Exome capture ~51 Mb → Agilent SureSelect Human All Exon V5
+
+##Then, an account on the Agilent SureDesign was created 
+then we searched for and downloaded the matching bed file “SureSelect Human All Exon V5” ==> from Suredesign ==> sureselect DNA ==> Agilent Catalog ==> SureSelect Human All Exon V5 (hg38) ==> Agilent SureDesign
+
+##Copying it to my work directory
+cp ../../Downloads/S04380110_hg38.zip .
 
 ########################################
 # 5) Prepare SureSelect V5 chr22 BED
