@@ -1,4 +1,3 @@
-Here’s a **clean GitHub-friendly version** with headings and subheadings using Markdown syntax. I’ve organized it to highlight your workflow, methods, and notes concisely while keeping it readable on GitHub:
 
 ```markdown
 # Benchmarking Variant Calling Performance at Different Depths (HG002, WGS)
