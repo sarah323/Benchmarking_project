@@ -117,7 +117,6 @@ bwa mem -t 2 -K 10000000 -R '@RG\tID:HG002\tSM:HG002\tPL:ILLUMINA' GRCh38_chr22.
 
 **Observation:** BAM larger than original due to:
 
-* No duplicate marking
 * Retained unmapped and supplementary reads
 
 ---
