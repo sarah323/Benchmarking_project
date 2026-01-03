@@ -44,32 +44,32 @@ METRICS=${PROJECT}/metrics/happy
 mkdir -p "$BAM" "$VCF" "$METRICS" "$raw_data" "$truth" "$ref"
 
 ########################################
-##Make sure that all the necessary packages and tools are installed:
+## Make sure that all the necessary packages and tools are installed:
 samtools --version
 bwa
 gatk --version
 bcftools –version
 
-##Installing hap.py in a separate environment because of compatibility issues 
+## Installing hap.py in a separate environment because of compatibility issues 
 conda create -n happenv -c bioconda -c conda-forge hap.py=0.3.12 python=3.7
 conda activate happenv
 which hap.py
 
 ########################################
-##Activating ngs1 environment again
+## Activating ngs1 environment again
 conda activate ngs1
 ########################################
 ##Downloading and preparing files:
 #######################################
-#downloading the GIAB reference (WES)
+# downloading the GIAB reference (WES)
 Wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/OsloUniversityHospital_Exome/151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bam
 wget https://ftp.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/OsloUniversityHospital_Exome/151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.bai
 
-#Downloading GRCh38 reference and unzipping it
+# Downloading GRCh38 reference and unzipping it
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 gunzip GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 
-#Renaming the file
+# Renaming the file
 mv GCA_000001405.15_GRCh38_no_alt_analysis_set.fna hg38.fa
 
 #indexing
