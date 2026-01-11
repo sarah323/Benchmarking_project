@@ -3,7 +3,7 @@
 
 - **Sarah Salah** – Faculty of Medicine, Alexandria University  
 - **Aya Refaay** – Faculty of Medicine, Alexandria University  
-- **Esraa Ali Abotaleb** – Biotechnology, Cairo University  
+- **Esraa Ali ** – Biotechnology, Cairo University  
 - **Hasnaa Elshehaby** – [Affiliation TBD]
 
 ## Overview
